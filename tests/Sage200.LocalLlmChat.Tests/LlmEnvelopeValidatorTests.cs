@@ -1,6 +1,7 @@
 using System.Text.Json.Nodes;
 using Sage200.LocalLlmChat.Core.Models;
 using Sage200.LocalLlmChat.Core.Validation;
+using Xunit;
 
 namespace Sage200.LocalLlmChat.Tests;
 

@@ -1,4 +1,5 @@
 using Sage200.LocalLlmChat.Core.Parsing;
+using Xunit;
 
 namespace Sage200.LocalLlmChat.Tests;
 
