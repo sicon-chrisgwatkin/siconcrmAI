@@ -156,11 +156,17 @@ public sealed class SiconCrmService : ICrmService
 
     private static string NormalizeText(string? value)
     {
-        if (string.IsNullOrWhiteSpace(value))
+        if (value is null)
         {
             return string.Empty;
         }
 
-        return value.Trim().ToLowerInvariant();
+        var trimmed = value.Trim();
+        if (trimmed.Length == 0)
+        {
+            return string.Empty;
+        }
+
+        return trimmed.ToLowerInvariant();
     }
 }
