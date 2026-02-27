@@ -33,14 +33,18 @@ public sealed class FileChatPanelSessionStateStore : IChatPanelSessionStateStore
             return new ChatPanelSessionState();
         }
 
-        await using var stream = File.OpenRead(_filePath);
-        var state = await JsonSerializer.DeserializeAsync<ChatPanelSessionState>(stream, cancellationToken: cancellationToken);
-        return state ?? new ChatPanelSessionState();
+        using (var stream = File.OpenRead(_filePath))
+        {
+            var state = await JsonSerializer.DeserializeAsync<ChatPanelSessionState>(stream, cancellationToken: cancellationToken);
+            return state ?? new ChatPanelSessionState();
+        }
     }
 
     public async Task SaveAsync(ChatPanelSessionState state, CancellationToken cancellationToken)
     {
-        await using var stream = File.Create(_filePath);
-        await JsonSerializer.SerializeAsync(stream, state, SerializerOptions, cancellationToken);
+        using (var stream = File.Create(_filePath))
+        {
+            await JsonSerializer.SerializeAsync(stream, state, SerializerOptions, cancellationToken);
+        }
     }
 }
