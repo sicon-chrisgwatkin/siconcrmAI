@@ -21,3 +21,5 @@ This repository contains a C# scaffold for a Sage 200 add-on that provides:
 - The implementation is privacy-first and does not include any cloud connector.
 - API-specific Sage 200/Sicon calls are represented behind interfaces and concrete placeholders.
 - Order posting/confirmation is guarded by explicit user confirmation flow.
+- Sage 200 compatibility target is `.NET Framework 4.7.2` (Core/Infrastructure multi-target `net472` + `net8.0` for testability).
+- Build the WinForms project on Windows (it targets `net472` with WinForms APIs).

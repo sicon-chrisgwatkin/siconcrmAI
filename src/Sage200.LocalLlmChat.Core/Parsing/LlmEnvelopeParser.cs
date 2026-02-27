@@ -7,7 +7,7 @@ namespace Sage200.LocalLlmChat.Core.Parsing;
 
 public sealed class LlmEnvelopeParser
 {
-    private static readonly IReadOnlySet<string> RootKeys = new HashSet<string>(StringComparer.Ordinal)
+    private static readonly ISet<string> RootKeys = new HashSet<string>(StringComparer.Ordinal)
     {
         "action",
         "entity",
@@ -17,7 +17,7 @@ public sealed class LlmEnvelopeParser
         "meta"
     };
 
-    private static readonly IReadOnlySet<string> ItemKeys = new HashSet<string>(StringComparer.Ordinal)
+    private static readonly ISet<string> ItemKeys = new HashSet<string>(StringComparer.Ordinal)
     {
         "type",
         "stock_code",
@@ -31,7 +31,7 @@ public sealed class LlmEnvelopeParser
         "discount_percent"
     };
 
-    private static readonly IReadOnlySet<string> MetaKeys = new HashSet<string>(StringComparer.Ordinal)
+    private static readonly ISet<string> MetaKeys = new HashSet<string>(StringComparer.Ordinal)
     {
         "user_confirmation_required",
         "notes"

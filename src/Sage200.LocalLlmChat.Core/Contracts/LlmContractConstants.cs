@@ -2,7 +2,7 @@ namespace Sage200.LocalLlmChat.Core.Contracts;
 
 public static class LlmContractConstants
 {
-    public static readonly IReadOnlySet<string> AllowedActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    public static readonly ISet<string> AllowedActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
     {
         "create_task",
         "create_opportunity",
@@ -15,7 +15,7 @@ public static class LlmContractConstants
         "cancel"
     };
 
-    public static readonly IReadOnlySet<string> AllowedEntities = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    public static readonly ISet<string> AllowedEntities = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
     {
         "task",
         "opportunity",
@@ -27,7 +27,7 @@ public static class LlmContractConstants
         "none"
     };
 
-    public static readonly IReadOnlySet<string> AllowedItemTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    public static readonly ISet<string> AllowedItemTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
     {
         "stock",
         "free_text",

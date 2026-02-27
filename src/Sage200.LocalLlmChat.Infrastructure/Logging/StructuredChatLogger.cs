@@ -93,8 +93,8 @@ public sealed class StructuredChatLogger : IChatLogger
     }
 
     private static bool IsSensitiveKey(string key) =>
-        key.Contains("password", StringComparison.OrdinalIgnoreCase) ||
-        key.Contains("token", StringComparison.OrdinalIgnoreCase) ||
-        key.Contains("secret", StringComparison.OrdinalIgnoreCase) ||
-        key.Contains("apikey", StringComparison.OrdinalIgnoreCase);
+        key.IndexOf("password", StringComparison.OrdinalIgnoreCase) >= 0 ||
+        key.IndexOf("token", StringComparison.OrdinalIgnoreCase) >= 0 ||
+        key.IndexOf("secret", StringComparison.OrdinalIgnoreCase) >= 0 ||
+        key.IndexOf("apikey", StringComparison.OrdinalIgnoreCase) >= 0;
 }

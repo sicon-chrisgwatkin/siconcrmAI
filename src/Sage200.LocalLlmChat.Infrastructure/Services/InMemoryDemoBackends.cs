@@ -57,7 +57,7 @@ public sealed class InMemorySiconCrmGateway : ISiconCrmGateway
     public Task<IReadOnlyList<CrmLookupRecord>> SearchCompaniesAsync(string query, CancellationToken cancellationToken)
     {
         var matches = _companies
-            .Where(company => company.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
+            .Where(company => company.Name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
             .ToArray();
         return Task.FromResult<IReadOnlyList<CrmLookupRecord>>(matches);
     }
@@ -65,7 +65,7 @@ public sealed class InMemorySiconCrmGateway : ISiconCrmGateway
     public Task<IReadOnlyList<CrmLookupRecord>> SearchPeopleAsync(string query, CancellationToken cancellationToken)
     {
         var matches = _people
-            .Where(person => person.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
+            .Where(person => person.Name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
             .ToArray();
         return Task.FromResult<IReadOnlyList<CrmLookupRecord>>(matches);
     }

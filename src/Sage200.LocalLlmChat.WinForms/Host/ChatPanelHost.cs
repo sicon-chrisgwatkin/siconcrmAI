@@ -186,11 +186,12 @@ public sealed class ChatPanelHost : IDisposable
 
     private async Task SaveStateAsync(CancellationToken cancellationToken)
     {
+        var skip = Math.Max(0, _conversation.Count - 30);
         var state = new ChatPanelSessionState
         {
             IsOpen = _panel.Visible,
             Width = _panel.Width,
-            Conversation = _conversation.TakeLast(30).ToArray()
+            Conversation = _conversation.Skip(skip).ToArray()
         };
 
         await _stateStore.SaveAsync(state, cancellationToken);
