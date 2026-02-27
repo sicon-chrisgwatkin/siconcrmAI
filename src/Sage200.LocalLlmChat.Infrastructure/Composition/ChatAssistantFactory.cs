@@ -1,3 +1,4 @@
+using System.Net.Http;
 using Sage200.LocalLlmChat.Core.Abstractions;
 using Sage200.LocalLlmChat.Core.Services;
 using Sage200.LocalLlmChat.Infrastructure.Llm;

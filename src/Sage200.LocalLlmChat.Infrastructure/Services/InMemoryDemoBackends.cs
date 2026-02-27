@@ -81,7 +81,9 @@ public sealed class InMemorySiconCrmGateway : ISiconCrmGateway
             _ => "none"
         };
 
-        var id = $"{entity[..Math.Min(entity.Length, 3)].ToUpperInvariant()}-{Guid.NewGuid():N}"[..12];
+        var prefix = entity.Substring(0, Math.Min(entity.Length, 3)).ToUpperInvariant();
+        var generated = $"{prefix}-{Guid.NewGuid():N}";
+        var id = generated.Substring(0, Math.Min(generated.Length, 12));
         return Task.FromResult(new CreateRecordResult
         {
             Success = true,
