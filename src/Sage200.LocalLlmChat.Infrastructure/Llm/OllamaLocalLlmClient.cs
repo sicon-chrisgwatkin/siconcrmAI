@@ -46,7 +46,7 @@ public sealed class OllamaLocalLlmClient : ILocalLlmClient
 
         return new LlmInferenceResult
         {
-            RawResponse = content,
+            RawResponse = content!,
             ModelName = _options.Model,
             Duration = DateTimeOffset.UtcNow - started
         };

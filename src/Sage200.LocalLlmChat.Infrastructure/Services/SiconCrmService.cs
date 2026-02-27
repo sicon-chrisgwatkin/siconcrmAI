@@ -88,7 +88,7 @@ public sealed class SiconCrmService : ICrmService
             return new DuplicateDetectionResult();
         }
 
-        var matches = await _gateway.SearchCompaniesAsync(name, cancellationToken);
+        var matches = await _gateway.SearchCompaniesAsync(name!, cancellationToken);
         return BuildDuplicateResult(matches, proposedFields);
     }
 
@@ -102,7 +102,7 @@ public sealed class SiconCrmService : ICrmService
             return new DuplicateDetectionResult();
         }
 
-        var matches = await _gateway.SearchPeopleAsync(name, cancellationToken);
+        var matches = await _gateway.SearchPeopleAsync(name!, cancellationToken);
         return BuildDuplicateResult(matches, proposedFields);
     }
 
@@ -154,6 +154,13 @@ public sealed class SiconCrmService : ICrmService
             ? string.Empty
             : new string(value.Where(char.IsDigit).ToArray());
 
-    private static string NormalizeText(string? value) =>
-        string.IsNullOrWhiteSpace(value) ? string.Empty : value.Trim().ToLowerInvariant();
+    private static string NormalizeText(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return string.Empty;
+        }
+
+        return value.Trim().ToLowerInvariant();
+    }
 }
