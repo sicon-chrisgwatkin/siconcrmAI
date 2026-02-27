@@ -30,6 +30,13 @@ export default defineConfig([
         { prefer: 'type-imports' },
       ],
       '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/no-deprecated': 'off',
+    },
+  },
+  {
+    files: ['src/main.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
     },
   },
 ])

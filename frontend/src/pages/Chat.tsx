@@ -1,4 +1,4 @@
-import { FormEvent, KeyboardEvent, useState } from 'react'
+import { useState, type FormEvent, type KeyboardEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import MissingFieldsPrompt from '../components/MissingFieldsPrompt'
@@ -132,7 +132,7 @@ function ChatPanel() {
         },
       ])
       setPending(null)
-      navigate(`/record/${result.entity}/${result.id}`)
+      void navigate(`/record/${result.entity}/${result.id}`)
     } catch (confirmError) {
       setError(toReadableError(confirmError))
     } finally {
@@ -151,9 +151,7 @@ function ChatPanel() {
     ])
   }
 
-  const hasMissingFields = Boolean(
-    pending && pending.missing_fields && pending.missing_fields.length > 0,
-  )
+  const hasMissingFields = (pending?.missing_fields.length ?? 0) > 0
   const showConfirmationButtons = pending?.meta.user_confirmation_required === true
 
   return (
@@ -162,7 +160,7 @@ function ChatPanel() {
         <h2 className="panel-title">Assistant Chat</h2>
         {messages.map((message, index) => (
           <article
-            key={`${message.role}-${index}`}
+            key={`${message.role}-${String(index)}`}
             className={`message-bubble message-${message.role}`}
           >
             <div className="message-role">{message.role}</div>
@@ -218,7 +216,9 @@ function ChatPanel() {
           id="chat-input"
           className="text-area"
           value={input}
-          onChange={(event) => setInput(event.target.value)}
+          onChange={(event) => {
+            setInput(event.target.value)
+          }}
           onKeyDown={handleInputKeyDown}
           placeholder="Create a sales order for Acme with 2 x A100 pumps."
           rows={4}

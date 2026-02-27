@@ -14,7 +14,7 @@ import {
 const rawBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').trim()
 export const apiBaseUrl = rawBaseUrl === '' ? '/' : rawBaseUrl
 
-const envMockMode = String(import.meta.env.MOCK_MODE ?? '').toLowerCase() === 'true'
+const envMockMode = (import.meta.env.MOCK_MODE ?? '').toLowerCase() === 'true'
 export const mockModeEnabled = rawBaseUrl === '' || envMockMode
 
 const api = axios.create({
@@ -49,7 +49,7 @@ export interface ChatRequest {
 
 export interface ChatResponse {
   model_json: ModelJson
-  ui_messages?: ChatMessage[]
+  ui_messages?: ChatMessage[] | undefined
 }
 
 export interface ExecuteActionResponse {

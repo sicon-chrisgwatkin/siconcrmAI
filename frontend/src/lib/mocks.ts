@@ -187,13 +187,12 @@ export async function mockChat(payload: MockChatPayload): Promise<MockChatRespon
   await wait(MOCK_DELAY_MS)
 
   const { action, entity } = classifyIntent(payload.message)
-  const fields = baseFieldsByEntity(entity)
+  const baseFields = baseFieldsByEntity(entity)
   const needsMoreFields = shouldRequireMoreFields(payload.message)
   const missing_fields = needsMoreFields ? missingByEntity(entity) : []
-
-  for (const fieldName of missing_fields) {
-    delete fields[fieldName]
-  }
+  const fields = Object.fromEntries(
+    Object.entries(baseFields).filter(([fieldName]) => !missing_fields.includes(fieldName)),
+  )
 
   const model_json: ModelJson = {
     action,

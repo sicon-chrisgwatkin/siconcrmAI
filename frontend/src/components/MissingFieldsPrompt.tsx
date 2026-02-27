@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react'
+import type { FormEvent } from 'react'
 
 interface MissingFieldsPromptProps {
   missingFields: string[]
@@ -13,20 +13,41 @@ function MissingFieldsPrompt({
   disabled = false,
   onSubmit,
 }: MissingFieldsPromptProps) {
-  const [answers, setAnswers] = useState<Record<string, string>>({})
-
-  useEffect(() => {
-    const initial: Record<string, string> = {}
-    for (const field of missingFields) {
-      const value = fields[field]
-      initial[field] = value == null ? '' : String(value)
+  const stringifyFieldValue = (value: unknown): string => {
+    if (value == null) {
+      return ''
     }
-    setAnswers(initial)
-  }, [fields, missingFields])
+
+    if (typeof value === 'string') {
+      return value
+    }
+
+    if (typeof value === 'number' || typeof value === 'boolean' || typeof value === 'bigint') {
+      return String(value)
+    }
+
+    if (typeof value === 'object') {
+      try {
+        return JSON.stringify(value)
+      } catch {
+        return ''
+      }
+    }
+
+    return ''
+  }
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    onSubmit(answers)
+    const formData = new FormData(event.currentTarget)
+    const values: Record<string, string> = {}
+
+    for (const fieldName of missingFields) {
+      const rawValue = formData.get(fieldName)
+      values[fieldName] = typeof rawValue === 'string' ? rawValue.trim() : ''
+    }
+
+    onSubmit(values)
   }
 
   return (
@@ -40,14 +61,9 @@ function MissingFieldsPrompt({
           <label key={fieldName} className="field">
             <span className="field-label">{fieldName}</span>
             <input
+              name={fieldName}
               className="text-input"
-              value={answers[fieldName] ?? ''}
-              onChange={(event) => {
-                setAnswers((prev) => ({
-                  ...prev,
-                  [fieldName]: event.target.value,
-                }))
-              }}
+              defaultValue={stringifyFieldValue(fields[fieldName])}
               placeholder={`Enter ${fieldName}`}
               required
             />

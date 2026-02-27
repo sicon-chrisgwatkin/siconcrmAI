@@ -13,25 +13,43 @@ function formatValue(value: unknown): string {
     return Number.isInteger(value) ? String(value) : value.toFixed(2)
   }
 
+  if (typeof value === 'string') {
+    return value
+  }
+
   if (typeof value === 'boolean') {
     return value ? 'Yes' : 'No'
   }
 
   if (typeof value === 'object') {
-    return JSON.stringify(value)
+    try {
+      return JSON.stringify(value)
+    } catch {
+      return '[unserializable]'
+    }
   }
 
-  return String(value)
+  if (typeof value === 'bigint') {
+    return value.toString()
+  }
+
+  return ''
 }
 
 function describeLineItem(item: ModelJson['items'][number]): string {
   switch (item.type) {
-    case 'stock':
-      return `${item.stock_code ?? 'N/A'} • ${item.qty ?? 0} @ ${formatValue(item.unit_price)}`
-    case 'free_text':
-      return `${item.qty ?? 1} x ${item.description ?? 'Free text'}`
+    case 'stock': {
+      const qty = item.qty == null ? '0' : formatValue(item.qty)
+      return `${item.stock_code ?? 'N/A'} • ${qty} @ ${formatValue(item.unit_price)}`
+    }
+    case 'free_text': {
+      const qty = item.qty == null ? '1' : formatValue(item.qty)
+      return `${qty} x ${item.description ?? 'Free text'}`
+    }
     case 'additional_charge':
-      return `${item.additional_charge_code ?? 'CHARGE'} @ ${formatValue(item.unit_price)}`
+      return `${item.additional_charge_code ?? 'CHARGE'} @ ${formatValue(
+        item.unit_price,
+      )}`
     case 'comment':
       return item.description ?? 'Comment'
     default:
@@ -72,7 +90,7 @@ function OrderPreviewCard({ modelJson }: OrderPreviewCardProps) {
           <h4 className="section-title">Line items</h4>
           <ul className="line-items">
             {modelJson.items.map((item, index) => (
-              <li key={`${item.type}-${index}`} className="line-item">
+              <li key={`${item.type}-${String(index)}`} className="line-item">
                 <span className="line-item-type">{item.type}</span>
                 <span className="line-item-description">{describeLineItem(item)}</span>
               </li>
